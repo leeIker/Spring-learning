@@ -1,0 +1,34 @@
+spring ioc控制反转或者叫di依赖注入
+头文件为
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd">
+		
+</beans>
+依赖注入式在xml中，application.xml中注入类与类，以及类与成员变量（可以即简单类型，也可以是引用类型）的关系
+在bean中注入成员变量的值
+
+ioc的作用为 1将bean放入超级工程中，使用方便  
+			2将bean的成员变量进行配置
+首先需要建立相应的类
+在application.xml中设置相应bean标签
+标签属性为id 和class
+举例子为
+<bean id="唯一标识符" class=“类的路径”>
+	其中字标签有property标签 有属性id 和value
+	<property id="类的成员属性" value=“成员属性的值”/>这是简单类型
+	<property id="类的成员属性" ref=“bean的id值”/>这是引用类型
+<bean>
+此种方式是通过setter 和getter注入
+
+然后再主类中使用ClassPathXmlApplicationContext类的构造函数ClassPathXmlApplicationContext（“application.xml”）将配置信息、
+导入容器
+然后使用ClassPathXmlApplicationContext.getBean("beande id值")获取bean的引用

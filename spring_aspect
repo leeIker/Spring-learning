@@ -1,0 +1,49 @@
+面向切面
+依赖注入能够把对象内容配置给其他对象
+
+面向对象能够把方法内容配置给其他对象
+
+一个类编程特定功能的类的方法
+继承类  实现借口  通过注解  配置
+
+aspect的通知
+前置通知 ，后置通知 ，异常通知 ，环绕通知
+
+前置通知步骤
+
+需要导包 aopaliance.jar
+		aspectjweaver.jar
+		
+编写代码 aop在执行add之前自动执行的方法log（）
+
+创建一个普通类，在类型中设置前置方法addPerson（）
+创建前置类实现methodBeforeAdvice接口
+并且实现其中的before方法
+
+applacation头文件 声明
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+ <aop:config>
+  	<aop:pointcut expression="execution(public void packageo/IsFather.java.addPerson(persono))" id="point"/>
+  	<aop:advisor advice-ref="before" pointcut-ref="point"/>
+  </aop:config>
+  
+  <bean id="isFather" class="packageo.IsFather">
+  		
+  </bean>
+  
+  <bean id="before" class="SpringAop.LogBefore">
+  
+  </bean>
+
+		
