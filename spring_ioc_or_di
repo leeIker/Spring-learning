@@ -27,8 +27,36 @@ ioc的作用为 1将bean放入超级工程中，使用方便
 	<property id="类的成员属性" value=“成员属性的值”/>这是简单类型
 	<property id="类的成员属性" ref=“bean的id值”/>这是引用类型
 <bean>
+比如<property name="courseName" value="史学导论"></property>
+        	<property name="courseHours" value="10"></property>
+        	<property name="teacher" ref="teacher"></property>  
 此种方式是通过setter 和getter注入
 
 然后再主类中使用ClassPathXmlApplicationContext类的构造函数ClassPathXmlApplicationContext（“application.xml”）将配置信息、
 导入容器
 然后使用ClassPathXmlApplicationContext.getBean("beande id值")获取bean的引用
+
+
+除了用setter和getter方法还可以用构造器
+用法为在bean中加入字标签constructor-arg   标签属性为value 对应在constructor中的位置的值是一致的
+如果不一样如果顺序不一致，可以用index属性制定  下面例子中index=‘0’的意思是此value值对应constructor的第一个值
+最后还可以在constructor中加入name属性，用来表示对应的value的索引 或者加入type属性，用来制定value的类型值
+当constructor中参数值不一致可以使用
+一般建议使用name 和value两个属性来填充constructor标签
+比如
+<constructor-arg value="史学导论" index=“0”></constructor-arg>
+        	<constructor-arg value="12"></constructor-arg>
+ 			<constructor-arg ref="teacher"></constructor-arg>
+同时这种方式需要constructor 你传入不同的参数的个数，回个据此调用不同的constructor
+会有这样一种情况，有两个构造器，分别传入两个参数，一个字符串，一个数字
+犹豫在构造器注入中，所输入数值都是用引号括起来，所以分不清，这种情况下，系统会默认调用String的
+构造器，如果想要调用数字的构造器，需要引入type或者name属性
+
+
+最后一种通过p命名空间注入
+声明为xmlns:p="http://www.springframework.org/schema/p"
+其方法为直接在bean标签中添加属性 p：简单类型名字=‘’  复杂类型为p:名字-ref=‘’
+比如<bean id="course" class="huijingyuan.Course" p:courseName="shixue daolun" p:courseHours="10" p:teacher-ref="teacher">
+    </bean> 
+
+
