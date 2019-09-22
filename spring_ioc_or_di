@@ -16,7 +16,7 @@ spring ioc控制反转或者叫di依赖注入
 依赖注入式在xml中，application.xml中注入类与类，以及类与成员变量（可以即简单类型，也可以是引用类型）的关系
 在bean中注入成员变量的值
 
-ioc的作用为 1将bean放入超级工程中，使用方便  
+ioc的作用为 1将bean放入超级工厂中，使用方便  
 			2将bean的成员变量进行配置
 首先需要建立相应的类
 在application.xml中设置相应bean标签
@@ -51,6 +51,8 @@ ioc的作用为 1将bean放入超级工程中，使用方便
 会有这样一种情况，有两个构造器，分别传入两个参数，一个字符串，一个数字
 犹豫在构造器注入中，所输入数值都是用引号括起来，所以分不清，这种情况下，系统会默认调用String的
 构造器，如果想要调用数字的构造器，需要引入type或者name属性
+注意在spring注入过程中，无论其注入的值是数值，还是spring其方式都是引号内加字符串，这样造成的结果是注入字符串和数值可能混淆
+所以在使用构造器注入式，如果出现这种情况，血药加type或者name属性
 
 
 最后一种通过p命名空间注入
@@ -58,5 +60,57 @@ ioc的作用为 1将bean放入超级工程中，使用方便
 其方法为直接在bean标签中添加属性 p：简单类型名字=‘’  复杂类型为p:名字-ref=‘’
 比如<bean id="course" class="huijingyuan.Course" p:courseName="shixue daolun" p:courseHours="10" p:teacher-ref="teacher">
     </bean> 
+	
+注入特殊类型的数据
+集合类型
+private List<String> list;
+	private String[] array;
+	private Set<String> set;
+	private  Map<String,String> map;
+	private Properties property;
+	
+	骑在配置文件的配置方式为
+	
+        
+        <bean id='collection' class='huijingyuan.AllCollection'>
+        	<property name="list">
+        		<list>
+        		<value>football</value>
+        		<value>basketball</value>
+        		</list>    		
+        	</property>
+        	
+        	<property name="array">
+        		<array>
+        			<value>lihe</value>
+        			<value>a girl</value>
+        		</array>
+        	</property>
+        	<property name="set">
+        		<set>
+        		 	<value>suiyu</value>
+        			<value>noname</value>
+        		</set>
+        	</property>
+        	<property name="map">
+        		<map>
+        			<entry>
+        			 	<key>
+        			 		<value>leehe </value>
+        			 	</key>
+        			 	<value>suiyu</value>
+        			</entry>
+        		</map>
+        	</property>
+        	<property name="property">
+        		<props>
+        			<prop key="zhangduchao">dingyuan_and_shuilaizhe</prop>
+        		</props>
+        	</property>
+        </bean>
+		
+
+	
+
 
 
