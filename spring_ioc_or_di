@@ -1,4 +1,11 @@
 spring ioc控制反转或者叫di依赖注入
+
+控制反转的底层技术是利用反射技术调用bean的无参数构造，所以
+每个bean必须有一个午餐构造
+如果本身没有构造函数，则默认会有一个
+如果自己创建一个有参数构造，则之前的默认无参数构造会消失
+需要自己手动创建一个午餐构造
+
 头文件为
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
@@ -36,6 +43,13 @@ ioc的作用为 1将bean放入超级工厂中，使用方便
 导入容器
 然后使用ClassPathXmlApplicationContext.getBean("beande id值")获取bean的引用
 
+使用properties标签还可以不用属性value
+转而增加字标签value然后再value标签中注入
+这种好处就在于不用加“”号，如果加会在内容中加入“”好
+另外还可以在value标签中加入type属性，给value值赋值
+如果使用value属性，则在使用到xml预定义符号如<时，只能使用转义字符或者叫实体引用
+如果是使用value字标签则可以使用<![CDATA[输入内容]]> 此标签能够将所有内容原样输出
+以上关于value的内容都适用于constructor注入
 
 除了用setter和getter方法还可以用构造器
 用法为在bean中加入字标签constructor-arg   标签属性为value 对应在constructor中的位置的值是一致的
@@ -60,6 +74,22 @@ ioc的作用为 1将bean放入超级工厂中，使用方便
 其方法为直接在bean标签中添加属性 p：简单类型名字=‘’  复杂类型为p:名字-ref=‘’
 比如<bean id="course" class="huijingyuan.Course" p:courseName="shixue daolun" p:courseHours="10" p:teacher-ref="teacher">
     </bean> 
+	
+	在配置文件中，注入null值得标签为</null>如果直接写null则会输出字符串“null”
+	其方式为直接在property中增加子标签</null>
+	比如<property id="">
+			</null>
+		</property>
+	
+	注入空字符串
+	如果是使用value标签赋值为空字符串，则是直接什么都不写即<value></value> 这样注入空字符串
+	如果是value属性也是啥也不写  value=“”即可
+      如
+		<property id="">
+			<value></value>
+		</property>
+		
+		<property id="" value="">
 	
 注入特殊类型的数据
 集合类型
@@ -109,6 +139,16 @@ private List<String> list;
         	</property>
         </bean>
 		
+		这其中List、set、array可以混着用，都用List标签
+		
+		
+自动装配
+自动装配只适用于引用类型（ref）
+在bean标签中田间autowire属性属性值为自动装配的方式
+其属性值有byName
+这种方式其实是byId   bean的属性名与另一个bean的id值是一样的时候
+两者自动配对，完成注入
+
 
 	
 
