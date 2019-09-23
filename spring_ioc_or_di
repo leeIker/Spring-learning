@@ -149,6 +149,51 @@ private List<String> list;
 这种方式其实是byId   bean的属性名与另一个bean的id值是一样的时候
 两者自动配对，完成注入
 
+第二种是byType这种方式是根据类型进行装配，类型一直则进行装配，这个根据的是byClass
+这种方法必须是在当前ioc容器中只有一个class才行，如果有两个同一个类型，则报错。
+
+顺便提一句，这种情况说明，ioc容器中不是加载类，加载对象。每一个bean是一个对象，不是一个类。
+
+第三种方式为byConstructor 这种方式是在beans中找与该bean构造方法中参数一致的对象进行配对
+和type一样都是通过class进行寻找
+以上是针对bean的一一对应的装配方式
+还可以将容器里所有对象进行同一装配
+方法为 在命名空间里加上default——autowire=“”这样会给容器里所有的bean添加autowire属性
+这种情况下bean中加上autowire属性时，会覆盖整个容器的自动装配
+
+自动装配可以减少代码量，但是会降低可读性，建议少用。
+
+
+大知识点  通过注解注入bean
+首先在配置文件中增加扫描器声明
+xmlns:context="http://www.springframework.org/schema/context"
+其次建立类在类的上一行写上@Component("id值")
+Component范围比较大，可以选用较小范围的注解
+比如说dao层用Repository
+service层用Service
+control层用Controller
+声明注解的时候，需要注意的一点事需要导包的，倒入相应的包。
+
+然后再配置文件中建立扫描器
+<context:component-scan base-package="需要传入的包"></context:component-scan>
+
+
+
+大知识点 使用注解声明事物
+通过注解让方法要不全成功，要不全失败。
+首先导包 spring-tx-4.3.9.RELEASE.jar
+         ojdbc.jar
+		 commons-jdbc.jar连接池使用的数据源
+		 commons-pool.jar 连接池
+		 spring-jabc.jar
+		 aopalliance。jar
+		 
+第二部配置
+		在配置文件中配置数据库相关信息
+
+
+
+
 
 	
 
