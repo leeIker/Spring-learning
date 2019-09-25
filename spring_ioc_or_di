@@ -9,6 +9,7 @@ spring ioc控制反转或者叫di依赖注入
 头文件为
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:p="http://www.springframework.org/schema/p"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:aop="http://www.springframework.org/schema/aop"
@@ -28,6 +29,10 @@ ioc的作用为 1将bean放入超级工厂中，使用方便
 首先需要建立相应的类
 在application.xml中设置相应bean标签
 标签属性为id 和class
+bean标签还有scope属性，可以确定bean的作用范围，通常有singleton和prototy两种。
+bean标签还有init——method属性，可以将类中的方法变成初始化方法，白bean初始化之前调用
+        以及destory——method属性，可以将类中的方法编程销毁方法，在bean销毁后调用。
+	语法为<bean id='' class='' scope='' inti——method=‘方法名不带括号’ destory-mathod=‘方法名不带括号’
 举例子为
 <bean id="唯一标识符" class=“类的路径”>
 	其中字标签有property标签 有属性id 和value
@@ -99,7 +104,7 @@ private List<String> list;
 	private  Map<String,String> map;
 	private Properties property;
 	
-	骑在配置文件的配置方式为
+	其在配置文件的配置方式为
 	
         
         <bean id='collection' class='huijingyuan.AllCollection'>
@@ -182,14 +187,51 @@ control层用Controller
 大知识点 使用注解声明事物
 通过注解让方法要不全成功，要不全失败。
 首先导包 spring-tx-4.3.9.RELEASE.jar
-         ojdbc.jar
-		 commons-jdbc.jar连接池使用的数据源
+         ojdbc.jar  总之是数据库驱动包
+		 commons-dbcp.jar连接池使用的数据源
 		 commons-pool.jar 连接池
 		 spring-jabc.jar
 		 aopalliance。jar
 		 
 第二部配置
+	    先在配置文件中增加tx声明空间
+		 xmlns:tx="http://www.springframework.org/schema/tx"
+		 
+		  http://www.springframework.org/schema/tx
+  		 http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+
+命名空间为<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xmlns:tx="http://www.springframework.org/schema/tx"
+   xmlns:aop="http://www.springframework.org/schema/aop"
+   xsi:schemaLocation="http://www.springframework.org/schema/beans
+   http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+   http://www.springframework.org/schema/tx
+   http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+   http://www.springframework.org/schema/aop
+   http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+		
 		在配置文件中配置数据库相关信息
+			<tx:annotation-drivern transation-manager="事务管理器id"/>增加事物支持
+			
+			然后配置事物管理器包含于倒入的jar包
+		    我们只需要加入容器即可
+			<tx:annotation-driven transaction-manager="txManager"/> //配置事物
+	<bean id='txManager' class="org.springframework.jdbc.DataSource.DataSourcetrasationManager">//事物管理器
+		<property name="dataSource"  ref="datasource"></property>
+	</bean>
+	
+	<bean id="datasource" class="org.apache.commons.dbcp.BasicDataSource"> //数据源信息
+		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver"></property>
+		<property name="url" value="jdbc:mysql://localhost:3306/test?serverTimezone=UTC&amp;"></property>
+		<property name="userName" value="root"></property>
+		<property name="password" value="901125"></property>	
+	</bean>
+			增加了数据库支持。
+			
+			
+		
 
 
 

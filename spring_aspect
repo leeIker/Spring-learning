@@ -3,6 +3,13 @@
 
 面向对象能够把方法内容配置给其他对象
 
+面向切面的几个概念
+切入点，确切的说是某个类的某个方法，以这个方法作为切入点，切入切入面
+切入面，需要进行切入的方法，也是某一个方法
+通知，切面加上切入的时机，即是所谓的通知
+  通知类型;前置通知，后置通知，环绕通知，异常通知
+  
+
 一个类编程特定功能的类的方法
 继承类  实现借口  通过注解  配置
 
@@ -14,11 +21,14 @@ aspect的通知
 需要导包 aopaliance.jar
 		aspectjweaver.jar
 		
-编写代码 aop在执行add之前自动执行的方法log（）
+编写代码 aop在执行add（）《此方法叫业务方法》之前自动执行的方法log（）《此方法叫aop方法》
 
-创建一个普通类，在类型中设置前置方法addPerson（）
-创建前置类实现methodBeforeAdvice接口
+创建一个普通类，在类型中设置前置方法addPerson（） 这个类是为了增加业务方法
+创建前置类实现methodBeforeAdvice接口  然后咋I实现类中实现before（）方法  before方法
+就是aop前置通知方法。
 并且实现其中的before方法
+
+然后将两个类配置到spring容器中
 
 applacation头文件 声明
 <?xml version="1.0" encoding="UTF-8"?>
@@ -33,17 +43,21 @@ applacation头文件 声明
         http://www.springframework.org/schema/aop
         http://www.springframework.org/schema/aop/spring-aop.xsd">
 
- <aop:config>
-  	<aop:pointcut expression="execution(public void packageo/IsFather.java.addPerson(persono))" id="point"/>
-  	<aop:advisor advice-ref="before" pointcut-ref="point"/>
-  </aop:config>
-  
-  <bean id="isFather" class="packageo.IsFather">
-  		
-  </bean>
-  
-  <bean id="before" class="SpringAop.LogBefore">
-  
-  </bean>
+  <bean id="addClass" class="huijingyuan.AddClass">
+        </bean>
+        <!-- aop方法 -->
+        <bean id="AopClass" class="huijingyuan.AopClass">
+        </bean>
+        
+        <aop:config>
+        <!-- 配置切入点 -->
+        <aop:pointcut expression="execution(public void huijingyuan.AddClass.add())" id="piontCut"/>
+        <aop:advisor advice-ref="AopClass" pointcut-ref="piontCut"/>酱切入点连接切入面
+        
+        </aop:config>
+		在做以上的时候出现两处错误，导致多耗费了40分钟，第一是execution拼写错误，少一个i
+		还有一个在execution中，设置配置方法的时候要将java这个字符串去掉，如果加上就不能识别。
+		2019.9.25日更新
+        
 
 		
