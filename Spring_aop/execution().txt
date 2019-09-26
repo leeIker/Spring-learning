@@ -1,0 +1,27 @@
+execution()表达式会根据传入参数确定切入点的位置
+参考文件夹表达式
+如果将类的所有东西东西都写全，那么切入点为一个确切的类
+比如public boolean org.lanqiao.service.IStudentService.addStudent(org.lanqiao.entity.Student))
+则上述参数的表示切入点为具体的某个包，某个类，某个具体的方法（连返回值都算在内）
+
+如果是public boolean addStudent(org.lanqiao.entity.Student))
+则切入点为则表示只要方法名和返回值是相符的，则可以匹配。
+
+public * addStudent(org.lanqiao.entity.Student)
+返回任意值得任意 addStudent（参数一样）的方法    这里的*表示任何返回值
+
+public void *( org.lanqiao.entity.Student） 
+表示任何参数返回值一直的方法（任意类）都可以匹配作为切入点。
+
+public void addStudent(..)
+任何类的任意参数的addStudent（）方法，返回值为void
+可以匹配
+
+* org.lanqiao.service.*.*(..)
+这个包中的所有方法都是可以的  但是子包的不行
+
+* org.lanqiao.service..*.*(..)
+这个包中的所有方法都可以匹配，而且子包的也可以。
+值得注意的是这个表达式的比上一个多一个.
+
+以上是一些比较常用的execution表达。

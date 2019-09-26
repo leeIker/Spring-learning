@@ -25,6 +25,18 @@ aspect的通知
 
 创建一个普通类，在类型中设置前置方法addPerson（） 这个类是为了增加业务方法
 创建前置类实现methodBeforeAdvice接口  然后咋I实现类中实现before（）方法  before方法
+比如public class AopClass implements MethodBeforeAdvice{
+
+	@Override
+	public void before(Method method, Object[] args, Object target) throws Throwable {
+		// TODO Auto-generated method stub
+			System.out.print("this is a aop前置通知");
+	}
+	在before方法中 object target引用到拥有业务方法的类
+				   Method method即是业务方法的引用
+				   Boject[]args 是业务方法的参数
+
+创建后置类实现AfterRetruningAdice接口   然后实现afterReurning()方法
 就是aop前置通知方法。
 并且实现其中的before方法
 
@@ -58,6 +70,10 @@ applacation头文件 声明
 		在做以上的时候出现两处错误，导致多耗费了40分钟，第一是execution拼写错误，少一个i
 		还有一个在execution中，设置配置方法的时候要将java这个字符串去掉，如果加上就不能识别。
 		2019.9.25日更新
+		
+		
+		2019.9.26日更新
+		
         
 
 		
