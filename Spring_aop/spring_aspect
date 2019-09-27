@@ -73,7 +73,16 @@ applacation头文件 声明
 		
 		
 		2019.9.26日更新
-		
-        
+
+		2019.9.27更新
+		异常通知类继承的类型为ThrowsAdvice
+		但是借口并没有抽象方法，但是有实现方法的格式。
+		格式为
+		 public void afterThrowing([Method, args, target], ThrowableSubclass  （其中method导包为反射包，args是参数 target是业务
+		方法的类，throwalbe为异常类型    中括号表示，前三个三叔必须一起导入）
+		或者是public void afterThrowing(), ThrowableSubclass
+			一种有参数，一种没有参数
+			
+			这个时候如果在调用切入点业务方法是，如果这个方法发生异常，这回调用这个异常通知方法
 
 		
