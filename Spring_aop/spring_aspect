@@ -84,5 +84,35 @@ applacation头文件 声明
 			一种有参数，一种没有参数
 			
 			这个时候如果在调用切入点业务方法是，如果这个方法发生异常，这回调用这个异常通知方法
+			
+			
+	环绕通知，环绕通知是最强大的通知，可以获得业务方法的全部控制权（目标方法是否执行，执行前干什么，执行之后干什么，方法的参数，返回值）
+	继承借口为MethodInterceptor类     环绕通知的底层是通过拦截器实现的
+	具体实现方法是
+		public Object invoke(MethodInvocation arg0) throws Throwable {
+		// TODO Auto-generated method stub
+		Object result=null;
+		//方法体1
+		try {
+			System.out.println("用环绕通知实现的前置通知");
+		//方法体2在这个方法之前写是前置通知
+		result =	arg0.proceed();//空值业务类是否执行
+		//在这个方法之后写是后置通知
+				System.out.println("用环绕通知实现的后置通知");
+		}catch(Exception e){
+		//方法体3在catch里面写是异常通知
+			System.out.println("用环绕通知实现的异常通知");
+		}
+		
+		return result;
+	}
+	环绕通知通过arg0获取业务方法的信息。System.out.println("目标对象"+arg0.getThis()+"对象方法："+arg0.getMethod().getName()+"参数方法："+arg0.getArguments().length+"返回值："+result);
+目标对象：arg0.getThis()
+对象方法：arg0.getMethod()       .getName()获取方法名
+参数方法：arg0.getArguments()		.length获取参数数组的个数
+返回值：+result;
 
+环绕方法可以控制业务类    如果注解掉	result =	arg0.proceed()那么业务类不会被执行
+另外可以用return返回新的返回值，如果继续返回result，则业务方法返回值不变
+但是如果改成别的值，业务方法的返回值会变。
 		
