@@ -1,0 +1,68 @@
+spring_web需要的jar包
+最基础的6个jar 和spring——web.jar
+分别是log，aop，bean ，core，context，espression
+开发java——spring与web——spring的区别是
+java的程序入口是一致的，所以容器初始化一次就行
+而web程序的入口不是同一的，你不知道程序的入口在哪里，
+所以web程序使用监听器，在tomcat启动时初始化一个spring容器
+监听器spring已经做好，只需要在web.xml中配置就行
+内容为
+<listener>
+  <!-- 配置spring——web。jar提供的监听器 -->
+  	<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+  其中org.springframework.web.context.ContextLoaderListener为spring.web提供的监听器
+  
+  
+  
+  
+  在web中配置ioc容器为
+  <context-param>
+  	<param-name>contextConfigLocation</param-name> 参数固定，为监听器父类属性
+  	<param-value>classpath:application.xml</param-value>  为applicationContext的位置。
+  </context-param>
+  
+  另外一种加载容器的方式是约定的方式
+  有两点要求，applicationContext必须是在web——info里面，且必须是这个名字。
+  
+  
+  
+  
+  拆分配置文件
+  web根据三层来进行拆分 
+		ui层（html、jsp、css  后端为servlet）  applicationController.XML
+		severce层     applicationServerse.xml
+		Dao层        applicationDao.xml
+		公共、数据库 applicationDB.xml
+			可以用一下方法配置同一容器
+			<context-param>
+  	<param-name>contextConfigLocation</param-name>
+  	<param-value>
+  		classpath:applicationContextController.xml,
+  		classpath:applicationContextServerse.xml,
+  		classpath:applicationContextDao.xml,
+  		classpath:applicationContextDB.xml 	
+  	</param-value>
+	将所有容器放到para——value里，用，好隔开即可。
+	
+	第二种形式是利用通配符*
+	即
+	<context-param>
+   <param-name>contextConfigLocation</param-name>
+  	<param-value>
+  		classpath:applicationContext*.xml,
+  		
+  	</param-value>
+  </context-param>
+    利用*将不同的部分注释掉  这种是推荐方式
+	
+	最后一种方式是在主文件中引用其他配置文件
+	利用import=“文件名”语句
+	这条引用出现在beans的属性中  每条属性引用一个配置文件
+	需要多少引用多少 
+	这种形式也用通配符
+
+
+   或者根据功能
+   
+   
