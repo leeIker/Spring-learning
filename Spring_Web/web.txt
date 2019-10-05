@@ -66,3 +66,17 @@ java的程序入口是一致的，所以容器初始化一次就行
    或者根据功能
    
    
+   spring容器融合servlet的方法
+   在servlet init（）方法中加载serverse类即
+   public void init() throws ServletException{
+		ApplicationContext context=	new ClassPathXmlApplicationContext("applicationContextController.xml");
+		ser=(Serverse_Impl)context.getBean("serverse");
+		
+		
+		其实就是这种情况
+		servlet不使用spring容器，人家有自己的容器tomcat
+		但是serverse层和dao层使用spring容器来管理
+		
+	}
+   
+   
