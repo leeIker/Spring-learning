@@ -1,0 +1,122 @@
+首先是二者的关系式
+spring整合mybatis即
+mybatis将核心类sqlSessionFactory交给spring管理
+
+需要导包mybatis-spring.jar包
+		spring-tx.jar
+		spring-jabc.jar
+		spring-expression.jar
+		spring-context-suport.jar
+		spring-core.jar
+		spring-context.jar
+		spring-beans.jar
+		spring-aop.jar
+		spring-web.jar(如果使用web)
+		commons-logging.jar
+		commons-dbcp.jar
+		commons-pool.jar
+		ojdbc.jar
+		mybatis.jar
+		log4j.jar
+		
+		
+不通过spring建立mybatis的步骤是
+简练类和table
+配置conf.xml（配置datasource  和mapper信息）
+配置mapper.xml文件建立类和table的映射关系
+在main函数中使用reader读取conf.xml
+然后建立SqlSessionFactory进行操作（增删改查）
+
+
+但是通过spring整合mybatis是
+将conf.xml配置放到spring容器中进行
+首先也是建立类和table
+
+然后建立conf.xml文件
+建立application.xml文件，将数据库信息配置到其中
+举例
+ <bean id="datasource" class="org.apache.commons.dbcp2.BasicDataSource">
+    	<property name="driver" value="com.mysql.cj.jdbc.Driver"></property>
+    	<property name="url" value="jdbc:mysql://localhost:3306/lee?serverTimezone=UTC&amp;"></property>
+    	<property name="username" value="root"></property>
+    	<property name="password" value="901125"></property>
+    </bean>
+	这是spring加载数据库信息的方式
+	
+	
+其中也可以使用加载propertie的方式把长字符串放在统一的问价中
+价值方式为
+<bean id="property" class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer">
+     	<property name="Locations">
+     		<array>
+     			<value>property 文件的位置</value>
+     		</array>
+     	</property>
+    </bean>
+
+将mapper.xml配置完成以后将其路径配置到conf.xml中。
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+ <mapper namespace="mapper.FriendMapper">
+ 	<select id="selectFriend" resultType="huijingyuan.Friend">
+ 		select * from friend
+ 	</select>
+ 
+ </mapper>以上为mapper.xml
+ 一下为conf.xml文件
+ <?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+ <mappers>
+ 	<mapper resource="mapper/FriendMapper.xml"/>
+ </mappers>
+</configuration>
+
+
+配置玩datasource和conf.xml之后，设置sqlSessionFactory，将其注入到spring容器中，其类为org.mybatis.spring.SqlSessionFactoryBean。
+然后将datasource和conf.xml（作用在于mapper文件的路径在其中）文件配置到容器中
+ <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+     	<property name="dataSource" ref="datasource"></property>
+     	<property name="configLocation" value="classpath:conf.xml"></property>
+     </bean>
+	 
+	 
+	 最后在dao层的类中继承SqlSessionDaoSupport方法
+	 在容器中加入dao层的类
+	 并将SlqSessionFactory的bean注入到dao层类中
+	 其代码为：
+	 <bean id="dao" class="dao_huijingyuan.DaoClass">
+    	<property name="SqlSessionFactory" ref="sqlSessionFactory"></property>
+    </bean>
+	 
+	 创建基础sql查询方法（原子性）在方法调用父类getSqlSession()方法，得到SqlSession对象，
+	 利用其对象的getMapper（mapper.class）得到mapper的借口，然后用这个借口进行基础查询。
+	 其代码为：
+	 public class DaoClass extends SqlSessionDaoSupport{
+	public Friend selectFriends() {
+		SqlSession session=super.getSqlSession();
+		FriendMapper mapper=session.getMapper(FriendMapper.class);
+				Friend friend= mapper.selectFriend();
+		return friend;
+	}
+}
+
+这样dao层就已经spring整合了mybatis，
+
+
+
+
+spring依赖注入，也就是配置的方式，相对于硬编码的方式的，大大地简化的编程的过程
+但是有一点是比不过硬编码的，那就是涉及逻辑的地方，若果需要你自己往类的方法中增加逻辑，
+那么配置就不好使了，这个时候只能采用硬编码的方式，即继承类或者实现借口，在类中
+进行逻辑编写。
+所以类也可以分两种类型，第一种是属性的集合，其中的方法主要是服务于类的属性，如果
+setter和getter方法，两者都是服务于类的属性，这种类型适合依赖注入，将属性注入到类中。
+还有一种是方法的集合，这种类基本上不能使用依赖注入，当然可以将类本身注入到容器中，
+多事采用硬编码的方式，继承和实现，然后重写类的方法，编写新的逻辑。
