@@ -1,0 +1,48 @@
+可以彻底去处conf文件
+在sqlSessionFactoryBean类中
+有一个属性是mapperLocations  可以在配置spring时
+对其进行赋值，其内容为mapper文件的路径
+其代码为
+<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+     	<property name="dataSource" ref="datasource"></property>
+     	<property name="mapperLocations" value="mapper/FriendMapper.xml"></property>
+     </bean>
+     
+	 这样即可以删除conf.cml文件
+	 
+	 
+	 
+第二可以去除dao层的具体实现类，直接使用别人写好的类
+注入容器并配置
+
+移除dao层的实现类的bean
+然后注入别人已经写好的实现类org.mybatis.spring.mapper.MapperFactoryBean
+冰注入dao层（动态代理借口）   和sqlSessionFactory
+这样可以直接用serverse层调用dao层（动态代理借口）
+代码如下
+<bean id="dao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="mapper.FriendMapper"></property>
+    	<property name="SqlSessionFactory" ref="sqlSessionFactory"></property>
+    </bean>
+	
+解释，按照这个思维，其实MapperFacrotyBean类也是dao层（动态代理借口）的实现类。
+
+这种还有一个确定是每个mapper必须配一个实现类，比较麻烦
+
+
+最后一种批量搞定多个dao层（动态代理借口）的方式
+其实现类为  org.mybatis.spring.mapper.MapperScannerConfigurer
+需要配置属性为basePackage  值为拥有mapper的包，这样可以将mapper一次性倒入
+另一个变量值为ref=“SqlSessionFactory”  但是其属性名为sqlSessionFacoty
+<bean id="mappers" class=" org.mybatis.spring.mapper.MapperScannerConfigurer">
+    	<property name="basePackage" value="mapper"></property>
+    	<property name="SqlSessionFactory" ref="sqlSessionFactory"></property>
+    </bean>
+	
+也可以用sqlSessionFacotyBeanName属性注入字符串属性为sqlSessionFactory的bean的id
+其代码为
+<bean id="mappers" class=" org.mybatis.spring.mapper.MapperScannerConfigurer">
+    	<property name="basePackage" value="mapper"></property>
+    	<property name="SqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+    </bean>
+两种方式都可以。

@@ -86,10 +86,10 @@ mybatis将核心类sqlSessionFactory交给spring管理
      	<property name="configLocation" value="classpath:conf.xml"></property>
      </bean>
 	 
-	 
-	 最后在dao层的类中继承SqlSessionDaoSupport方法
-	 在容器中加入dao层的类
-	 并将SlqSessionFactory的bean注入到dao层类中
+	 建立dao层，dao层即是mybatis中的动态代理借口，
+	 然后再在dao层的实现类中继承SqlSessionDaoSupport方法
+	 在容器中加入dao层的实现类
+	 并将SlqSessionFactory的bean注入到dao层实现类中
 	 其代码为：
 	 <bean id="dao" class="dao_huijingyuan.DaoClass">
     	<property name="SqlSessionFactory" ref="sqlSessionFactory"></property>
@@ -98,7 +98,7 @@ mybatis将核心类sqlSessionFactory交给spring管理
 	 创建基础sql查询方法（原子性）在方法调用父类getSqlSession()方法，得到SqlSession对象，
 	 利用其对象的getMapper（mapper.class）得到mapper的借口，然后用这个借口进行基础查询。
 	 其代码为：
-	 public class DaoClass extends SqlSessionDaoSupport{
+	 public class DaoClass extends SqlSessionDaoSupport implements FriendMapper{
 	public Friend selectFriends() {
 		SqlSession session=super.getSqlSession();
 		FriendMapper mapper=session.getMapper(FriendMapper.class);
@@ -107,7 +107,11 @@ mybatis将核心类sqlSessionFactory交给spring管理
 	}
 }
 
-这样dao层就已经spring整合了mybatis，
+	然后再serverse层中注入dao层（即mybatis中的动态代理借口），但是在application.xml中
+	配置的确实其实现类DaoClass，因为dao层和其实现类的模型是一样的，可以直接调用其方法
+	进行查询。
+
+这样dao层的实现类就已经spring整合了mybatis，
 
 
 
