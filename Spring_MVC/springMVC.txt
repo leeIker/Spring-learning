@@ -1,0 +1,75 @@
+springMVC是用来处理servlet的
+也就是三层中的ui层后端  前段是html、css、jsp、jsp、js
+               serverse层使用spring
+			   而dao层使用mybaitis
+			   
+jar包   Spring_aop.jar包
+		Spring_bean.jar包
+		Spring_context.jar包
+		Spring-web.jar包
+		Spring_core.jar包
+		conmment_log.jar
+		
+		
+网页加载流程    jsp->servlet->jsp这样的流程
+
+
+而springmvc的方法是将一切请求拦截方法是在web.XML
+中配置
+ <servlet>
+  	<servlet-name>SpringDispatcherServlet</servlet-name>
+  	<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+  
+  	<load-on-startup>1</load-on-startup>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>SpringDispatcherServlet</servlet-name>
+  	<url-pattern>/</url-pattern>
+  </servlet-mapping>
+  
+  
+  其中servlet——mapping的url——pattern中的值/拦截一切请求
+  传到到DispatcherServlet类中，这是控制器类，将请求分发飞
+  其他的servese
+  
+  其中load——on——startpu 中的值1表示在tomcat启动时第一个启动这个控制器
+  还有一个字标签是 init-param  用来加载springmvc的配置文件，这个文件中没有
+  是因为使用了配置的方式在web——info中，而且名字必须是SpringDispatcherServlet-servlet.xml
+  这样是默认位置。
+  
+  然后穿件具体的映射类
+  使用注解的方式进行注释。
+
+创建springmvc的配置文件
+
+设置注解扫面的包
+<context:component-scan base-package="org.huijingyuan.controller"></context:component-scan>
+
+设置视图解析器
+<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" id="jspViewResolver">
+
+       			 <property name="prefix" value="/views/"></property>
+       			 <property name="suffix" value=".jsp"></property>
+   			 </bean>
+			 
+			 
+			 
+然后设置登入页面和转发的页面，在映射类中进行配置即可
+
+映射类默认使用的是求请转发
+
+也可以在类的前面加上@ResquestMapping(“infomation”)
+这种情况就是在在请求中加入infomation/在家具体方法的映射
+
+拦截器的东西
+
+拦截器值为/   拦截器拦截一切请求
+如果拦截器拦截/someting，则拦截以someting开头的请求
+如果拦截器以.something 表示只拦截以.something结尾的请求
+如果是/something/something.something表示只拦截这个请求
+
+
+
+
+ 
