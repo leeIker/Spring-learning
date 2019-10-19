@@ -1,0 +1,113 @@
+springmvc 的映射类我学的是使用
+           注解的方式配置如容器的
+		   
+		   注解有：
+					controller
+					RequestMapping
+					
+					
+					controller表示此类是映射关系类
+					RequestMapping则归类具体的映射关系
+					
+					
+		import org.springframework.stereotype.Controller;
+
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@Controller
+public class SpringmvcHandler {
+    @RequestMapping("wellcome") 
+	public String wellcome() {
+		return "success";
+	}  
+	这个是我自己写的例子，  这个wellcome方法表示  拦截“wellcome”的请求
+	并且请求转发的success   为中间部分，结合视图解析器的前缀和后缀组合成的文件中
+	
+	  其中以上例子中，可以在中也加入RequestMapping注解，这样就是在请求中先找
+	  类中的注解值，在找方法中的注解值。
+	  
+	  
+	  另外注解的值和类的、方法的名是可以不一致的。
+	  
+	  
+	  
+	  RequestMapping中还有很值属性和值其中上面所用的是value，也就是不写的默认是value
+	  
+	  还有method表示请求的方法       使用RequstMethod.POST这样的类型去赋值
+			小词条：请求方式中，如果没有手工改，默认是get方式
+			
+			其修改方式是： @RequestMapping(value="wellcome", method=RequestMethod.POST) 
+	public String wellcome() {
+		return "success";
+		
+			这样求情只有是post的时候才能被映射关系接受
+			
+				四种请求方式分别是  get  put delete  post
+				
+				
+				
+		RequestMapping中的另一个参数是param   其中设置在请求中必须有参数
+		例子是  @RequestMapping(value="wellcome", method=RequestMethod.POST,params= {"name"} )
+		这样在请求中 提交的数据中，必须有一个参数是name
+		
+		如果在name=value值的话，则只有在name值等于value的情况下，才会拦截该请求
+		还可以加！=号，用来表示该属性不能等于某个特定的值   这个不等于的情况是没有这个属性也是可以的，但是如果有，则必须不等于
+		举例子
+		 @RequestMapping(value="wellcome", method=RequestMethod.POST,params= {"name=zs","age!=23"} )
+		 表示名为age的属性不能为23，或者根本没有age属性
+		
+		参数还有最后一种情况  是表示任何参数的值不能是这个值得情况   其情况为”！something“
+		举例子是：
+		 @RequestMapping(value="wellcome", method=RequestMethod.POST,params= {"name=zs","age!=23","!lihe"} )
+		 在请求当中不能有 lihe这个字符串
+		 
+		 
+		 ant风格的请求方式 利用通配符进行筛选
+		 ?表示单个字符
+		 *表示任意个（包括0个）字符
+		 **表示任意目录
+		 
+		其中需要讲解的是**任意目录      因为目录需要使用//扩起来   是/**/这样的形式
+		
+		
+		通过	PathVariable注解获取参数
+		例子是
+		@RequestMapping(value="wellcome2/{name}" )
+   	public String wellcome2(@PathVariable("name") String name) {
+    		System.out.println(name);
+   		return "success";
+   	}
+		
+		前段的请求为<a href="wellcome2/name"
+		
+		请求中的那么 配提交到 RequestMapping中的name中
+		然后PathVariable 注解拿到，并赋值飞自己修饰的字符串name
+		然后可以在类中使用这个值
+		
+		
+		REST软件编程风格
+		springmvc中
+		get  ：查询
+		delete：删除
+		post 增加
+		put：改
+		
+普通浏览器只支持post get两种请求方式
+所以需要配置拦截器   增加请求方式
+
+过滤器的名字是HidenHttpMethodFilter\
+其配置方式是在web。xml中配置
+ <filter>
+  	<filter-name>HiddenHttpMethodFilter</filter-name>
+  	<filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
+  </filter>
+  <filter-mapping>
+  	<filter-name>HiddenHttpMethodFilter</filter-name>
+  	<url-pattern>/*</url-pattern>
+  </filter-mapping>
+  
+  是spring给写好的过滤器
+  其隐藏的属性我<input  type="hidden"  name="method"  value="delete/put"
+   只要一个请求满足以上条件，就会被过滤器拦截         根据value的值修改请求方式  delete改成delete请求    put改成put请求  
+		
+		
