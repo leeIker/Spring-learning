@@ -111,3 +111,64 @@ public class SpringmvcHandler {
    只要一个请求满足以上条件，就会被过滤器拦截         根据value的值修改请求方式  delete改成delete请求    put改成put请求  
 		
 		
+		
+springmvc对客户端输入信息的拿去方式处理上面的方式外，还有一种
+方式:利用ReqeustParam（）注解拿到，
+参数为客户端kv对的k  然后将v赋值给注解修饰的变量（通常是在形参中）
+例子是： @RequestMapping(value="wellcome4" )
+   	public String wellcome4(@RequestParam("name") String name) {
+    		System.out.println(name);
+   		return "success";
+		
+		RequestParam注解还有其他的参数其中上述例子中的name其实是value=“name”
+		只不过在一个参数时默认是这样
+		这个注解还有其他的参数  比如required参数  默认为ture表示这个参数必须穿值，可以手动改成
+		false 改值以后可以不用传值
+		还有defaultValue参数，其值为当前段没有传来参数的时候默认的值。
+		
+	如果传来多个参数，需要用多个ReqeustParam注解来接收
+   	}
+	
+	还有一个注解是RequestHeader用来拿请求的头信息的
+	其方式和上面的RequestParam是一样的，都在参数中，将值赋值给所修饰参数
+	
+	如果要拿cookie，需要使用cookieValue注释拿，操作和以上注释一样
+	
+	
+springmvc还可以使用对象拿参数
+方式是在前段的输入参数的name和对象的属性完完全全一致
+这种映射支持级联映射，级联对象的属性通过对象名.属性的方式加name
+其方式为
+   控制器内容
+ @RequestMapping(value="wellcome5")
+   	public String wellcome5( Student student) {
+    		System.out.println(student.getId()+","+student.getName()+","+student.getAge());
+   		return "success";
+	
+前端内容	
+	<form action="something/wellcome5">
+		id:<input name="id">
+		name:<input name="name">
+		<br>----
+		age:<input name="age">
+		<br>-----
+		<input type="submit" value="input">
+	
+	</form>
+	
+student类的属性：private int id;
+	private String name;
+	private int age;
+	
+	
+	
+	
+springmvc也可以用原始的servlet来开发
+使用方式是在在映射方法的参数中直接声明原始servlet的request和response，然后可以直接
+在映射方法中使用
+比如  public String ServletTest（HttpServletRequest  request，HttpServletResponse response）{
+	在方法体内可以任意调用request和response两个对象，和原始servlet是一样的。
+
+}	
+	
+		
