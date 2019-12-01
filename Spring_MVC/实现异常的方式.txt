@@ -1,0 +1,58 @@
+Springmvc实现异常处理的方式也是继承类，
+
+类型为handlerExceptionResolver类  
+
+其子类ExceptionHandlerExceptionResolver提供注释@ExceptionHandler
+用来捕获异常
+其代码如下
+
+		@ExceptionHandler(ArithmeticException.class)
+		public String exceptionT(Exception e) {
+				System.out.print(e);
+			
+			return "error";
+		}
+		
+		
+		当在项目中出现数学异常是
+		
+		这个异常捕获方法会将异常捕获到自己的的方法体中
+		冰保留在参数的Exception e中，用来使用错误信息
+		然后利用return 返回一个新的page
+		和用try catch 是一样的。
+		
+		另外，在这种用于捕获异常的方法中，参数只能是异常类型
+		
+		所以要想在返回页面中加入信息，必须是用ModelAndView类
+		原来ModelAndView的用处在这里。
+		
+		
+		
+当同时拥有多个异常处理方法是，
+处理的路径会使最短路径，即最明确的那个方法。
+
+@ExceptionHandler注释只能捕获同一个类的异常
+
+但是如果在异常捕获方法所在的类上加入注释@ControllerAdvice
+可以单独建一个类，用上@ControllerAdvice注释
+这样这个类就是单独处理异常的类型
+
+
+
+
+
+另外一个问题  修改异常信息
+使用@ResponseStatus注释新的异常类，
+当抛出此异常类是，页面会显示定义的信息。
+一下为自定义异常类
+@ResponseStatus(value=HttpStatus.FORBIDDEN,reason="something to say")
+public class MyException extends Exception{
+
+}
+
+一下为出发异常类的映射方法
+@RequestMapping("welcome3")
+		public String welcome3() throws MyException {
+			 throw new MyException();
+			
+		}

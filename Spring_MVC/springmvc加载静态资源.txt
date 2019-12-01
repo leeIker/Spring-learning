@@ -1,0 +1,18 @@
+在springmvc中如果直接寻找静态资源，会显示404文件没有找到。
+因为springmvc将所有的拦截进行了拦截  冰根据springmvc原则寻找资源
+然后根据请求名寻找，实际上在springmvc的请求路径中是不可能有的。
+
+解决方式是如果需要使用springmvc来处理，则转移到springmvc中，如果不需要则
+使用tomcat的默认servlet进行处理。
+默认方式是：在原始servlet中，是一一对应的关系，每个请求有专门的servlet进行
+处理，
+请求的路径servlet——mapping标签中，如果没有，则默认交给tomcat的自带的一个servlet
+进行处理，它将请求转化成项目的其他资源（静态资源）
+
+具体的操作步骤是
+在springmvc的配置文件中加入以下两个标签
+
+   			<mvc:annotation-driven></mvc:annotation-driven>
+   			<mvc:default-servlet-handler></mvc:default-servlet-handler>
+   	其中下面的是让默认servlet加载静态内容的许可
+	上面的内容是允许使用springmvc来处理请求

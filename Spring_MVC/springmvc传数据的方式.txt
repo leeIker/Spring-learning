@@ -1,0 +1,75 @@
+springmvc 传数据的方式首先是通过ModelAndView类进行传到
+其例子为 @RequestMapping(value="wellcome6")
+   	public ModelAndView wellcome6( Student student) {
+    		ModelAndView mv=new ModelAndView("success");
+    		mv.addObject("student",student);
+    		
+   		return mv;
+    其中ModelandView类型中包含两部分数据：第一类是需要跳转的页面，
+										  第二部分是controller所传入的信息
+	在所有方法中，（包括这个方法）controller都将数据传到到request作用域中
+	这里其他方法是
+		ModelMap    Model Map三种方式，将model数据传到如挑战页面中
+		这三种方式的返回值都是String字符串，为跳转页面的名字
+		其中ModelMap利用put（key，value）方法将model数据传入view页面中
+			map利用put（k，v）将model数据传到如view中
+			Model利用addAttribute("student",student)将model数据传到如view中
+		其代码为
+		
+		 @RequestMapping(value="wellcome7")
+   	public String wellcome7( Student student1,ModelMap map) {
+    		map.put("student1", student1);
+   		return "success";
+    
+    }
+    
+    @RequestMapping(value="wellcome8")
+   	public String wellcome( Student student2,Map<String,Object> map) {
+    		map.put("student2", student2);
+   		return "success";
+    
+    }
+    
+    @RequestMapping(value="wellcome9")
+   	public String wellcome9( Student student3,Model map) {
+    		map.addAttribute("student3",student3);
+   		return "success";
+    
+    }
+	
+	
+	将kv对家到session的方法是使用注解SessinAttributes
+	其例子为
+@SessionAttributes()
+@Controller
+@RequestMapping("something")
+public class SpringmvcHandler
+
+将SessionAttributes（）加到类的注解中   注解的参数有两种，可以是kv对的k
+														  也可以是类型
+	是v的例子是
+	@SessionAttributes("student3")
+@Controller
+@RequestMapping("something")
+这样会把requestAttibutes中kv对中k为student3的kv对加入到session中
+如果选用多个可以使用多个的方式
+即将所以要的k以数组的形式传递到参数中即可
+例子是
+@SessionAttributes({"student1","student2","student3"})
+则request中student1，student2，student3这个kv对全部传到session中去
+另外在前段，如果是requestScope这样的东西，如果后面界类的名称，会将所有对象全部用上。
+
+
+最后	ModelAttributes怎么看都是没有一点意义的东西
+
+
+	
+	
+	
+			
+		
+		
+		
+		
+	
+	
