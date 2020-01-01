@@ -1,0 +1,24 @@
+实现借口org.springframework.web.servlet.HandlerInterceptor
+
+然后将实现类加入到容器中
+其方法是
+
+
+   			<mvc:interceptors>
+   				
+   				
+   				<mvc:interceptor>
+   					<mvc:mapping path=""/>
+   					<mvc:exclude-mapping path=""/>
+   					<bean class="org.huijingyuan.intercepter.MyIntercepter"></bean>
+   				</mvc:interceptor>
+   			</mvc:interceptors>
+			
+			
+			
+			mapping是拦截的内容
+			exclude-mapping是不拦截的
+			两者去交集
+			然后交给bean中的实现类进行拦截。
+			
+			

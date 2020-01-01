@@ -1,0 +1,11 @@
+1拿前段request的kv对信息用  RequestParam（）注解
+2拿request头信息用   RequestHeader（）注解
+3拿cookie信息  用CookieValue()  注解
+4使用对象接受前端现象
+  直接在参数中传入对象   ，然后前段的kv对直接传到对象中
+  一般是使用 form表单来填写kv对    
+  条件是传入的kv 对  的key必须和对象的属性一直
+  
+  
+5  如果想在springmvc中是用原始的request和response来进行编程
+   只需要将这两个参数直接放到参数中，直接用即可。

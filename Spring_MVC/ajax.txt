@@ -1,0 +1,8 @@
+ajax  可以用jquery来使用 非常简便
+
+要用mvc将java数组或者集合转变成jason格式
+需要导入一下jar包
+
+jackson——annotations.jar
+jackson——core.jar
+jackson-databind.jar

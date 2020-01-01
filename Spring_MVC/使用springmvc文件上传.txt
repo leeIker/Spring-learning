@@ -1,0 +1,46 @@
+需要恶jar包围commons-io.jar  和commons-fileupload.jar
+
+其具体的实现类为CommonsMultipartResolver，这个实现
+文件上传功能
+只需要将其加载到容器中即可
+
+可以给类配置各种属性比如上传的最大byte数
+使用的字符集合
+例子是
+<bean id="multipartResolver"  class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+   				<property name="defaultEncoding"  value="utf-8"></property>
+   				<property name="maxUploadSize" value="102400000000"></property>
+   				
+   			
+   			</bean>
+			
+			
+然后可以在controller中进行操作，使用RequestParam参数将文件传给参数 然后进行操作
+其例子是
+
+@RequestMapping("welcome4")
+		public String welcome4(@RequestParam("des")String des,@RequestParam("file") MultipartFile file) throws IOException {
+			System.out.println("文件描述信息"+des);
+		     InputStream input=	file.getInputStream();
+		     String fileName=file.getOriginalFilename();
+		     OutputStream output=new FileOutputStream("d://"+fileName);
+		     
+		     byte[] bs=new byte[1024];
+		     int len=-1;
+		     while( (len=input.read(bs))!=-1) {
+		    	 
+		    	output.write(bs,0,len); 
+		     }
+		     input.close();
+		     output.close();
+		     System.out.println("success");
+		     
+		     
+			return "success";
+		}
+		
+		
+	将文件传到 MultipartFile对象中，然后进行操作
+	例子中的操作是将文件通过内存传到d盘中
+	
+	
