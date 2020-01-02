@@ -1,0 +1,16 @@
+mvc处理异常的顶级接口是HandlerExceptionResolver
+我们平时用的实现类是ExceptionHandlerExceptionResolver
+其用法是提供了ExceptionHanlder注解
+也不用往容器里加，其实自己给加好的
+直接用ExceptionHandler注释就行
+
+只能捕获当前类中的异常
+
+但是只要在该类之前加上ControllerAdvice
+则这个类的异常处理方法就可以处理整个mvc项目
+
+
+另外一个比较常用给的注解是ResponseStatusResolver类
+提供的ResponseStatus注解
+这个注解是声明一个异常类，
+这个异常类在抛出来的时候，在页面上出现自定义的状态码和原因
