@@ -1,0 +1,18 @@
+boot加载静态页面用webjar
+访问是从webjar开始到所需要的资源
+是在resource文件下开始算路径
+这是引入别人的静态资源
+
+
+
+还有我们自己的静态资源
+boot有自己的静态资源路径约定
+
+去约定路径为
+"classpath:/META-INF/resources/", "classpath:/resources/",
+			"classpath:/static/", "classpath:/public/"
+			
+			
+在以上路径中存放静态资源时，不需要加前缀，直接是资源名即可
+
+以上路径为静态资源存放路径

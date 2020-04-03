@@ -1,0 +1,21 @@
+微服务：将大的项目分解成几个小的模块，然后通过网络协议进行沟通。
+有点是可替代性比较强，而springboot就是专门用来开发微小模块的。
+
+
+1springboot可以简化j2ee的开发
+2spring项目的整合
+3这个j2ee的大整合。
+
+
+目前看最大的优势是省去了倒入jar包和配置的过程
+springboot会将以上工作全部做好，
+
+开发人员只需要将手写的部分做好就行。
+
+
+
+springboot   resource文件的作用
+
+static文件是放静态文件的，包括htlm  js  css   
+templates是放各种模板文件的
+application.propertis  是配置文件

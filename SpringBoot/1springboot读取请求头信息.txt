@@ -1,0 +1,27 @@
+boot取请求头的值一般是使用
+@RequestHeader注解 修饰HttpHeader
+来实现   HttpHeader
+有方法get（String key）能够得到 List<String>
+
+利用List的get（int index）方法获得相应的值。
+
+
+
+还有就是利用@RequestHeader（String key）  String value
+
+的方式拿到相应的值
+
+
+但是有一点需要注意的是，只要在这个过程中 寻找header的
+
+kv对 的过程中，出现不存在k
+则boot会马上放回一个body为空的 200；
+
+这就相当于验证Authorization 是否存在。
+
+在客户端那边可以可以通过判断HttpStatus为200&&data===null
+来确定确定没有授权。
+
+
+如果有授权，则分别可以返回200，data有数据
+和204，data为空。就这样吧。

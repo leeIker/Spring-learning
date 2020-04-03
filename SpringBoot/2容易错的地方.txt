@@ -1,0 +1,20 @@
+1springboot构建的web项目的pom文件很容易在第一行报错
+但是又不报哪里错了。
+一原因可能是   配置文件的parent标签中的版本不符
+
+解决方式可以   右键项目点 update project
+				又是还要情况项目库
+				
+				
+2在springboot构建的web项目中，所需要自己写的逻辑文件都是写在
+与启动类同等级的包中
+
+可以独立建包，包的地位和启动类相同。
+
+
+
+SpringBoot的内置容器对象
+ApplicationContext
+说是内置类也不对
+可以直接在类中声明
+然后手机用autowired进行自动装配

@@ -1,0 +1,12 @@
+springboot有两个配置文件  
+一个是resource中   application.properties
+
+还有一个是  是application.yml
+
+
+其中yml文档不是一个标记文档
+
+yml文档的格式
+
+kv对的方式：k：空格v
+     使用垂直对其来解释从属关系

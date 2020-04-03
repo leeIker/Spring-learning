@@ -1,0 +1,13 @@
+springboot的配置文件位置在一下位置
+是可以识别的
+file：项目根目录/config
+file；项目根目录
+classpath：项目根目录/config
+classpath:项目根目录
+并且优先级是从上倒下
+当冲突时，优先使用上面路径中的配置文件
+
+当不冲突是，都使用
+
+配置文件有两个 一个是application.yml
+					 application.properties
